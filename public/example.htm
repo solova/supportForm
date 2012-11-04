@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://iii.uwc.org.ua/ -->
+<html lang="uk"><script type="text/javascript" async="" src="./example_files/ga.js"></script><script id="tinyhippos-injected">if (window.top.require) { window.top.require("ripple/bootstrap").inject(window, document); }</script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Головна | UA Web Challenge - III</title>
+  
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta http-equiv="Content-Language" content="uk">
+  <meta name="title" content="Головна">
+  <meta name="keywords" content="">
+  <meta name="description" content="Головна">
+  <link rel="stylesheet" type="text/css" href="./example_files/reset.css">
+  <link rel="stylesheet" type="text/css" href="./example_files/main.css">	
+    <link rel="stylesheet" type="text/css" href="./example_files/reset(1).css" media="all">
+	<link rel="stylesheet" type="text/css" href="./example_files/icons.css" media="all">
+	<link rel="stylesheet" type="text/css" href="./example_files/grids.css" media="all">
+	<link rel="stylesheet" type="text/css" href="./example_files/custom.css" media="all">
+	<!--[if IE]><link rel="stylesheet" type="text/css" href="http://iii.uwc.org.ua/public/design/css/new/ie.css" /><![endif]-->
+	<!--[if IE 6]><link rel="stylesheet" type="text/css" href="http://iii.uwc.org.ua/public/design/css/new/ie6.css" /><![endif]-->
+	<script src="./example_files/validate.js"></script>
+  <!--[if IE]>
+      <link rel="Stylesheet" type="text/css" href="http://iii.uwc.org.ua/public/design/css/ie.css" />
+  <![endif]-->
+  
+	
+    <script type="text/javascript" src="./example_files/jquery.js"></script>
+    <script type="text/javascript" src="./example_files/jquery.lightbox-0.5.pack.js"></script>
+    <link rel="stylesheet" type="text/css" href="./example_files/jquery.lightbox.css" media="screen">
+
+    <script src="./example_files/widget.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        
+        LOGINZA.ajax = true;
+        LOGINZA.callback = function () {
+            var $form = $('.auth').filter(':visible'), $formContainer = $form.parent();
+            if ($formContainer.attr('id') == 'loginForm') {
+                //$form.submit();
+                $.post('/auth/login/', $('#logForm').serialize(), function(data) {
+                    if (data == '1') {
+                        location.href = '/';
+                    } else {
+                        $('#loginForm').html(data);
+                        LOGINZA.init();
+                    }
+                });
+            } else {
+                $form.find('input[type="password"]')
+                     .removeAttr('required')
+                     .css('visibility', 'hidden')
+                     .each(function() { $form.find('label[for="' + this.name + '"]').css('visibility', 'hidden') });
+
+                $.post('/auth/loginza', function (profile) {
+                    var fieldValues = {
+                        email: profile.email,
+                        name: ('name' in profile) ? profile.name.first_name : '',
+                        surname: ('name' in profile) ? profile.name.last_name : ''
+                    };
+                    $form.find('input[name]').val(function() { return fieldValues[this.name] });
+                }, 'json');
+            }
+        }
+
+        $(function() {
+            $('a.lightview').lightBox();
+
+            var $popupForm = $();
+
+            $('.screen').click(function() {
+                $('.screen').hide();
+                $popupForm.hide();
+                $popupForm = $();
+            });
+
+            function setPopup(links, form) {
+                $(links).click(function() {
+                    var body = document.body,
+                        docElem = document.documentElement,
+                        screenHeight = Math.max(
+                            body.scrollHeight, docElem.scrollHeight,
+                            body.offsetHeight, docElem.offsetHeight,
+                            body.clientHeight, docElem.clientHeight
+                        );
+
+                    $('.screen')
+                    .fadeTo(0, 0.3)
+                    .height(screenHeight)
+                    .show();
+
+                    ($popupForm = $(form)).css({
+                        position: 'fixed',
+                        top: '50%',
+                        left: '50%',
+                        margin: '-' + ($popupForm.height() / 2) + 'px 0 0 -' + ($popupForm.width() / 2) + 'px',
+                        display: 'block'
+                    });
+
+                    return false;
+                });
+            }
+
+            setPopup('a.log', '#loginForm');
+            setPopup('a.reg', '#registerForm');
+            setPopup('a.chd', '#changeForm');
+            setPopup('a#feedback', '#feedbackForm');
+
+            $('#submitFeedback').click(function() {
+                var a = /^([a-z0-9_\-]+\.)*[a-z0-9_\-]+@([a-z0-9\-]*\.)+[a-z]{2,4}$/i;
+                if (a.test($('#feedbackEmail').val())) {
+                    $.post('/index/feedback/', $('#feedForm').serialize(), function(data) {
+                        $('#feedbackForm').html(data);
+                    });
+                } else {
+                    alert('Невірний формат email!');
+                    $('#emailFeedback').css('border', '1px solid red');
+                    $('#emailFeedback').focus();
+                }
+                return false;
+            });
+            $('.registerForm').submit(function() {
+        	$.post('/uk/auth/register/', $('.registerForm').serialize(), function(data) {
+        	    if (data == 'oldOne') {
+        		$('#status').html('Учасник з таким email вже існує у базі.');
+        		return false;
+        	    }
+        	    if (data == 'invalidEmail') {
+        	        $('#status').html('Невірний формат email!');
+        		return false;
+        	    }
+        	    else {
+        		location.href = data;
+        	    }
+        	});
+        	return false;
+            });
+            
+            $('.accordion a').click(function() {
+                $(this.getAttribute('href')).find('.content').slideToggle('fast');
+                return false;
+            });
+
+            $('.accordion .content').hide();
+        });
+    </script>
+
+<script type="text/javascript" src="./example_files/openapi.js"></script>
+
+<script type="text/javascript">
+  VK.init({apiId: 3157568, onlyWidgets: true});
+</script>
+        
+<link href="./example_files/widget.css" rel="stylesheet" type="text/css"><style type="text/css">#twtr-widget-1 .twtr-avatar { display: block; } #twtr-widget-1 .twtr-user { display: inline; } #twtr-widget-1 .twtr-tweet-text { margin-left: 40px; }</style><link type="text/css" rel="stylesheet" href="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/style.css"><script type="text/javascript" charset="utf-8" src="chrome-extension://cpngackimfmofbokmjmljamhdncknpmg/page_context.js"></script><style type="text/css">#twtr-widget-1 .twtr-doc,                      #twtr-widget-1 .twtr-hd a,                      #twtr-widget-1 h3,                      #twtr-widget-1 h4 {            background-color: #8ec1da !important;            color: #ffffff !important;          }          #twtr-widget-1 .twtr-tweet a {            color: #1985b5 !important;          }          #twtr-widget-1 .twtr-bd, #twtr-widget-1 .twtr-timeline i a,           #twtr-widget-1 .twtr-bd p {            color: #444444 !important;          }          #twtr-widget-1 .twtr-new-results,           #twtr-widget-1 .twtr-results-inner,           #twtr-widget-1 .twtr-timeline {            background: #ffffff !important;          }</style>
+
+        <link rel="stylesheet" href="supportform.css" />
+        <script src="/socket.io/socket.io.js"></script>
+
+        <script type="text/javascript" src="js/supportform.js"></script>
+
+</head>
+<body screen_capture_injected="true">
+<div class="top-menu cfix">
+	<div class="container block-inline-huck cfix">
+		<div class="box m2 social icons-big gray">
+			<i><a href="https://www.facebook.com/uawebchallenge" title="UA Web Challenge III в Facebook">f</a></i> <i><a href="http://vk.com/uawebchallenge" title="UA Web Challenge III в вКонтакте">v</a></i> <i><big><a href="http://twitter.com/#!/search?q=%23uwcua" title="Обзор новостей с UA Web Challenge III">t</a></big></i>
+		</div>
+		<div class="box m2 archive mrg2">
+			<a href="./example_files/example.htm"><strong>III</strong></a><a href="http://ii.uwc.org.ua/">II</a><a href="http://i.uwc.org.ua/">I</a>
+		</div>
+	</div>
+</div>
+<!--
+<div id="oopsForm" align="center">
+                        <div><img src="http://iii.uwc.org.ua/public/design/img/r2d2.png" /></div>
+                        «Упс, ми змушені <strong>призупинити ненадовго</strong> реєстрацію. <br /><br /> Введи свою пошту &mdash; повідомимо про відновлення»
+                        <br /><br />
+                        <input type="text" placeholder="Поштова скринька" style="width: 280px; border: 1px solid #eee; padding: 5px 8px; text-align: center" id="email" />
+                        <br /><br />
+                        <span class="result"></span><input type="image" src="http://iii.uwc.org.ua/public/design/img/button.png" id="submit" style="cursor:pointer"/>
+</div>
+-->
+<div id="loginForm">
+<script type="text/javascript"> 
+    $(function() {
+        $('#submitLogin').click(function() {
+            $.post('/auth/login/', $('#logForm').serialize(), function(data) {
+                if (data == '1') {
+                    location.href = '/';
+                } else {
+                    $('#loginForm').html(data);
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+<form class="auth" method="post" action="http://iii.uwc.org.ua/auth/login/" id="logForm">
+    <fieldset>
+        <h1>Вхід</h1>
+        <label for="email" class="label">E-mail</label><br>
+        <input type="email" name="email" class="text" required="" value=""><br><br>
+
+        <label for="password" class="label">Пароль</label><br>
+        <input type="password" name="password" class="text" pattern=".{6,}" required=""><br>
+
+        <div class="socialEnter">
+            <br>
+            <div class="rightSide"><a href="http://iii.uwc.org.ua/auth/forgotpass">Забув пароль?</a></div>
+            <br><br>
+            <div class="leftSide">
+            <input type="image" src="./example_files/enter_uk.png" id="submitLogin">
+            </div>
+            <div class="leftSide2">
+                <div style="font-size: 10px; margin-bottom: 3px;">Вхід через</div>
+                <a href="https://loginza.ru/api/widget?token_url=http%3A%2F%2Fiii.uwc.org.ua%2Fauth%2Floginza&providers_set=facebook,linkedin,vkontakte,google&provider=facebook" class="loginza"><img src="./example_files/facebook.png" width="20"></a>
+<a href="https://loginza.ru/api/widget?token_url=http%3A%2F%2Fiii.uwc.org.ua%2Fauth%2Floginza&providers_set=facebook,linkedin,vkontakte,google&provider=linkedin" class="loginza"><img src="./example_files/linkedin.png" width="20"></a>
+<a href="https://loginza.ru/api/widget?token_url=http%3A%2F%2Fiii.uwc.org.ua%2Fauth%2Floginza&providers_set=facebook,linkedin,vkontakte,google&provider=vkontakte" class="loginza"><img src="./example_files/vkontakte.png" width="20"></a>
+<a href="https://loginza.ru/api/widget?token_url=http%3A%2F%2Fiii.uwc.org.ua%2Fauth%2Floginza&providers_set=facebook,linkedin,vkontakte,google&provider=google" class="loginza"><img src="./example_files/google.png" width="20"></a>            </div>
+        </div>
+    </fieldset>
+</form></div>
+<div id="registerForm"><form class="auth registerForm" action="http://iii.uwc.org.ua/auth/register" method="post"> 
+    <fieldset>
+        <h1>Реєстрація</h1>
+        <label for="email" class="label">E-mail</label><br>
+        <input type="email" name="email" class="text" required=""><br><br>
+
+        <label for="password" class="label">Пароль</label><br>
+        <input type="password" name="password" class="text" pattern=".{6,}" required=""><br><br>
+
+        <label for="name" class="label">Ім'я</label><br>
+        <input type="text" name="name" class="text" pattern=".{2,}" required=""><br><br>
+
+        <label for="surname" class="label">Прізвище</label><br>
+        <input type="text" name="surname" class="text" pattern=".{2,}" required=""><br><br>
+        
+        <label for="is_senior" class="label">Досвід роботи:</label><br>
+        <select name="is_senior">
+            <option value="0">Менше 1 року</option>
+            <option value="1">Більше 1 року</option>
+        </select><br><br>
+        
+        <label for="section" class="label">Номінація:</label><br>
+        <select name="section" id="select_type_of_group">
+            <option value="frontend">Frontend developer</option>
+            <option value="backend">Backend developer</option>
+            <option value="architect">Архітектор систем</option>
+            <option value="designer">Web-дизайнер</option>
+            <option value="tester">Тестувальник</option>
+            <option value="team">Командна</option>
+        </select><br><div id="team_name"></div><br>
+        
+        <label for="comments" class="label">Коментар</label><br>
+        <input type="text" name="comments" class="text"><br><br>
+        <div id="status" style="color: red; font-weight: bold;"></div><br>
+        <div class="socialEnter">
+            <div class="leftSide">
+                <input type="image" src="./example_files/register_button_uk.png" id="registerButton">
+            </div>
+            <div class="leftSide2">
+                <div style="font-size: 10px; margin-bottom: 3px;">реєстр. через</div>
+                <a href="https://loginza.ru/api/widget?token_url=http%3A%2F%2Fiii.uwc.org.ua%2Fauth%2Floginza&providers_set=facebook,linkedin,vkontakte,google&provider=facebook" class="loginza"><img src="./example_files/facebook.png" width="20"></a>
+<a href="https://loginza.ru/api/widget?token_url=http%3A%2F%2Fiii.uwc.org.ua%2Fauth%2Floginza&providers_set=facebook,linkedin,vkontakte,google&provider=linkedin" class="loginza"><img src="./example_files/linkedin.png" width="20"></a>
+<a href="https://loginza.ru/api/widget?token_url=http%3A%2F%2Fiii.uwc.org.ua%2Fauth%2Floginza&providers_set=facebook,linkedin,vkontakte,google&provider=vkontakte" class="loginza"><img src="./example_files/vkontakte.png" width="20"></a>
+<a href="https://loginza.ru/api/widget?token_url=http%3A%2F%2Fiii.uwc.org.ua%2Fauth%2Floginza&providers_set=facebook,linkedin,vkontakte,google&provider=google" class="loginza"><img src="./example_files/google.png" width="20"></a>            </div>
+        </div>
+    </fieldset>
+</form></div>
+<div id="changeForm">
+<script type="text/javascript">
+$(function () {
+    $('.changeForm').submit(function () {
+        return !!$(this).find('select[name="section"] option:selected').val();
+    });
+    
+    $('.changeForm select[name="section"]')
+    .css('border', '1px solid red')
+    .change(function () {
+        var isEmpty = !$(this).find('option:selected').val();
+        $(this).css('border-color', isEmpty ? 'red' : 'green');
+    });
+});
+</script>
+
+<form class="auth changeForm" action="http://iii.uwc.org.ua/auth/change" method="post">
+    <fieldset>
+        <h1>Змінити дані</h1>
+        <!--<label for="email" class="label">E-mail</label><br />
+        <input type="email" name="email" value="" class="text" required /><br /><br />-->
+
+                    <label for="password" class="label">Пароль</label><br>
+            <input type="password" name="password" class="text" pattern="|.{6,}" placeholder="(залишити старий)"><br><br>
+        
+        <label for="name" class="label">Ім'я</label><br>
+        <input type="text" name="name" value="" class="text" pattern=".{2,}" required=""><br><br>
+
+        <label for="surname" class="label">Прізвище</label><br>
+        <input type="text" name="surname" value="" class="text" pattern=".{2,}" required=""><br><br>
+        
+        <label for="is_senior" class="label">Досвід роботи:</label><br>
+        <select name="is_senior">
+            <option value="0">Менше 1 року</option>
+            <option value="1">Більше 1 року</option>
+        </select><br><br>
+        
+        <label for="section" class="label">Номінація:</label><br>
+        <select name="section" id="select_type_of_group2" style="border: 1px solid red; ">
+                            <option></option>
+                        <option value="frontend">Frontend developer</option>
+            <option value="backend">Backend developer</option>
+            <option value="architect">Архітектор систем</option>
+            <option value="designer">Web-дизайнер</option>
+            <option value="tester">Тестувальник</option>
+            <option value="team">Командна</option>
+        </select><br><div id="team_name2"></div><br><br>
+        
+        <label for="comments" class="label">Коментар</label><br>
+        <input type="text" name="comments" class="text" value=""><br><br>
+
+        <div class="socialEnter">
+            <div class="leftSide">
+                <input type="image" src="./example_files/save_uk.png">
+            </div>
+        </div>
+    </fieldset>
+</form>
+
+<script type="text/javascript">
+
+
+$("#select_type_of_group2").show(function(){
+    var val = $("#select_type_of_group2").val();
+    if(val == "team") {
+        $("#team_name2").html("<br />Назва команди: <br /><input type='text' style='width: 150px' name='team_name' value=''>");
+    } else {
+        $("#team_name2").html("");
+    }
+    
+});  
+
+
+$("#select_type_of_group2").change(function(){
+    var val = $(this).val();
+    if(val == "team") {
+        $("#team_name2").html("<br />Назва команди: <br /><input type='text' style='width: 150px' name='team_name' value=''>");
+    } else {
+        $("#team_name2").html("");
+    }
+    
+}); 
+
+
+</script></div>
+<div id="feedbackForm"><form class="auth" action="http://iii.uwc.org.ua/index/feedback" method="post" id="feedForm">
+    <fieldset>
+        <h1>Зворотній зв'язок</h1>
+
+        <label for="name" class="label">Ім'я</label><br>
+        <input type="text" name="name" class="text" pattern=".{2,}" required=""><br><br>
+
+        <label for="email" class="label">E-mail</label><br>
+        <input type="email" name="email" class="text" required="" id="feedbackEmail"><br><br>
+
+        <label for="email" class="label">Розділ</label><br>
+        <select type="type" name="type" id="type">
+            <option value="0">Технічні питання</option>
+            <option value="1">Питання щодо конкурсної частини</option>
+            <option value="2">Загальні питання</option>
+        </select>
+        <br><br>
+
+        <label for="message" class="label">Повідомлення</label><br>
+        <textarea name="message" cols="32" rows="10" pattern=".{2,}" required=""></textarea><br><br>
+        
+        Human? 10+9 = <br>
+        <input type="text" name="s123"><br><br>
+
+        <div class="socialEnter">
+            <div class="leftSide">
+                <input type="image" src="./example_files/send_uk.png" id="submitFeedback">            </div>
+        </div>
+    </fieldset>
+</form></div>
+<div class="screen"></div>
+<div id="wrap">
+
+    <div class="main-wrap">
+    <div class="main-wrap-content">
+    <div class="main-wrap-paddings">
+
+        <div id="head-top">
+            <a id="alterLangContainer" class="topmenu-item" href="http://iii.uwc.org.ua/ru" title="по-русски"><img id="alterLang" src="./example_files/ru.png" alt="по-русски"></a>
+            <a class="topmenu-item" href="./example_files/example.htm">UA Web Challenge</a>
+            <div id="topmenu" style="float:right">
+                                    <a class="topmenu-item" href="http://iii.uwc.org.ua/nominations" title="">Номінації</a>
+                                    <a class="topmenu-item" href="http://iii.uwc.org.ua/committee" title="Інформація про організаційний комітет">Оргкомітет</a>
+                                    <a class="topmenu-item" href="http://iii.uwc.org.ua/judges" title="Журі чемпіонату">Журі</a>
+                                    <a class="topmenu-item" href="http://iii.uwc.org.ua/faq" title="Часто задаваемые вопросы">FAQ</a>
+                                    <a class="topmenu-item" href="http://iii.uwc.org.ua/Contacts" title="">Контакти</a>
+                         </div>
+        </div><!-- #head-top -->
+            
+            <div id="booster-ua">
+<a href="http://iii.uwc.org.ua/smart" class="abooster animate"><img src="./example_files/booster-ua.png" border="0" alt="SMART people tender"></a>
+</div>
+                        
+        <div id="main">
+            
+            <div id="content">
+
+                <table class="content-wrap">
+                    <tbody><tr>
+                                                <td class="content-wrap-part"><table class="partnerBox">
+<caption class="asTag">&lt;генеральний партнер /&gt;</caption>
+<tbody><tr><td>
+<a href="http://vostokventures.com/" target="_blank">
+  <img src="./example_files/vostokventures2.png" width="160" border="0">
+</a>
+</td></tr>
+</tbody></table>
+
+<table class="partnerBox">
+<caption class="asTag">&lt;генеральний партнер /&gt;</caption>
+<tbody><tr><td>
+<a href="http://www.infopulse.com.ua/" target="_blank">
+  <img src="./example_files/infopulse.png" width="160" border="0">
+</a>
+</td></tr>
+</tbody></table>
+
+
+<table class="partnerBox">
+<caption class="asTag">&lt;організаційний партнер /&gt;</caption>
+<tbody><tr><td>
+<a href="http://launchpad.com.ua/" target="_blank">
+  <img src="./example_files/itlaunchpad.png" width="160" border="0">
+</a>
+</td></tr>
+</tbody></table>
+
+<table class="partnerBox">
+<caption class="asTag">&lt;наші партнери /&gt;</caption>
+<tbody><tr><td>
+<a href="http://ciklum.com/" target="_blank">
+  <img src="./example_files/ciklum.png" width="160" border="0">
+</a>
+</td></tr>
+<tr><td>
+<a href="http://lezgro.com/" target="_blank">
+  <img src="./example_files/lez_crisp.png" width="160" border="0">
+</a>
+</td></tr>
+<tr><td>
+<a href="http://dataart.com.ua/" target="_blank">
+  <img src="./example_files/dataart.png" width="160" border="0">
+</a>
+</td></tr>
+<tr><td>
+<a href="http://webmoney.ua/" target="_blank">
+  <img src="./example_files/webmoney.png" width="160" border="0">
+</a>
+</td></tr>
+</tbody></table>
+
+<table class="partnerBox">
+<caption class="asTag">&lt;призові партнери /&gt;</caption>
+<tbody><tr><td>
+<a href="http://www.nokia.ua/" target="_blank">
+  <img src="./example_files/nokia.png" width="160" border="0">
+</a>
+</td></tr>
+
+<tr><td>
+<a href="http://edu.cbsystematics.com/" target="_blank">
+  <img src="./example_files/cbsystematics.png" width="160" border="0">
+</a>
+</td></tr>
+</tbody></table>
+
+<table class="partnerBox">
+<caption class="asTag">&lt;генеральний інфо-партнер /&gt;</caption>
+<tbody><tr><td>
+<a href="http://www.developers.org.ua/" target="_blank">
+  <img src="./example_files/dou.png" width="150" border="0">
+</a>
+</td></tr>
+</tbody></table>
+
+<table class="partnerBox">
+<caption class="asTag">&lt;інфо-партнер /&gt;</caption>
+<tbody><tr><td>
+<a href="http://tochka.net/"><img src="./example_files/tochka.png" alt=""></a>
+</td></tr>
+</tbody></table>
+
+
+<table class="partnerBox">
+<caption class="asTag">&lt;офіційний кар'єрний портал /&gt;</caption>
+<tbody><tr><td>
+<a target="_blank" href="http://it.rabota.ua/">
+  <img src="./example_files/itrabota.png" width="160" border="0">
+</a>
+</td></tr>
+</tbody></table>
+
+<center><a href="mailto:box@uwc.org.ua">&lt;стати партнером /&gt;</a></center></td>
+                                                <td id="content-inner" class="content-wrap-part"><div class="asTag" style="margin-left: 60pt">&lt;новини /&gt;</div>
+<table id="news">
+                            <tbody><tr>
+            <th>
+                                    <a href="http://iii.uwc.org.ua/support"><img src="./example_files/UWC.png"></a>
+                            </th>
+            <td>
+                                <h4>29 Жовтня 2012</h4>
+                <h3><a href="http://iii.uwc.org.ua/support">Support</a></h3>
+                Для зручності ми реорганізували саппорт. Ти можеш отримати відповіді на запитання по завданнях тут (публічні Skype-чати).
+            </td>
+        </tr>
+                                <tr>
+            <th>
+                                    <a href="http://iii.uwc.org.ua/vidbirkoviy-etap-startuvav"><img src="./example_files/MK_UWC.png"></a>
+                            </th>
+            <td>
+                                <h4>27 Жовтня 2012</h4>
+                <h3><a href="http://iii.uwc.org.ua/vidbirkoviy-etap-startuvav">Відбірковий етап стартував!</a></h3>
+                Завдання UA Web Challenge III вже доступні. Авторизуйся на сайті та отримуй їх.
+            </td>
+        </tr>
+                                <tr>
+            <th>
+                                    <a href="http://iii.uwc.org.ua/smart-people-tender"><img src="./example_files/mozg.png"></a>
+                            </th>
+            <td>
+                                <h4>25 Жовтня 2012</h4>
+                <h3><a href="http://iii.uwc.org.ua/smart-people-tender">SMART.people tender</a></h3>
+                В рамках UA Web Challenge I и UA Web Challenge II проводилися конкурси стартапів. І в цей раз конкурсу бути. Але не конкурсу стартапів.
+            </td>
+        </tr>
+                                <tr>
+            <th>
+                                    <a href="http://iii.uwc.org.ua/ostanniy-tyzhden-reyestracii"><img src="./example_files/MK_UWC.png"></a>
+                            </th>
+            <td>
+                                <h4>22 Жовтня 2012</h4>
+                <h3><a href="http://iii.uwc.org.ua/ostanniy-tyzhden-reyestracii">Стартував останній тиждень реєстрації</a></h3>
+                Стартував останній тиждень реєстрації на третій чемпіонат UA Web Challenge. Нагадуємо, що реєстрація триває до 26 жовтня включно.
+            </td>
+        </tr>
+                                <tr>
+            <th>
+                                    <a href="http://iii.uwc.org.ua/mem-contest"><img src="./example_files/mem.jpg"></a>
+                            </th>
+            <td>
+                                <h4>22 Жовтня 2012</h4>
+                <h3><a href="http://iii.uwc.org.ua/mem-contest">Конкурс мемів: даруємо Kindle Fire</a></h3>
+                Оголошуємо конкурс мемів у нашому представництві ВКонтакті. ПРИЗ: Kindle Fire від Генерального партнеру UA Web Challenge - Infopulse.
+            </td>
+        </tr>
+                                <tr>
+            <th>
+                                    <a href="http://iii.uwc.org.ua/announce-championship"><img src="./example_files/UWC.png"></a>
+                            </th>
+            <td>
+                                <h4>18 Жовтня 2012</h4>
+                <h3><a href="http://iii.uwc.org.ua/announce-championship">Анонсуй чемпіонат!</a></h3>
+                У нас часто добрі люди питають текст анонсу чи макет плакату для розповсюдження по своїх каналах. Робимо документи загальнодоступними ;)
+            </td>
+        </tr>
+                                <tr>
+            <th>
+                                    <a href="http://iii.uwc.org.ua/prizi-vid-cbsystematics"><img src="./example_files/cbsprize1.jpg"></a>
+                            </th>
+            <td>
+                                <h4>11 Жовтня 2012</h4>
+                <h3><a href="http://iii.uwc.org.ua/prizi-vid-cbsystematics">Призи від CyberBionic Systematics</a></h3>
+                Переможці вікової категорії «менше року досвіду роботи» отримають сертифікати на навчання у СyberBionic Systematics
+            </td>
+        </tr>
+                                <tr>
+            <th>
+                                    <a href="http://iii.uwc.org.ua/prizi-vid-nokia"><img src="./example_files/nokialumia1.png"></a>
+                            </th>
+            <td>
+                                <h4> 9 Жовтня 2012</h4>
+                <h3><a href="http://iii.uwc.org.ua/prizi-vid-nokia">Призи від Nokia</a></h3>
+                Призовий партнер UA Web Challenge III - компанія Nokia дарує переможцю вікової категорії 1+ надійну Nokia Lumia 800
+            </td>
+        </tr>
+                                <tr>
+            <th>
+                                    <a href="http://iii.uwc.org.ua/reyestraciyu-rozpochato"><img src="./example_files/MK_UWC.png"></a>
+                            </th>
+            <td>
+                                <h4> 1 Жовтня 2012</h4>
+                <h3><a href="http://iii.uwc.org.ua/reyestraciyu-rozpochato">Реєстрацію розпочато!</a></h3>
+                Ми стартуємо з реєстрацією на третій Ukrainian Web Challenge. Обирай номінацію та реєструйся прямо зараз.  Перевір себе та отримай купу позитиву;)
+            </td>
+        </tr>
+                                <tr>
+            <th>
+                                    <a href="http://iii.uwc.org.ua/my-zbyraiemo-istorii"><img src="./example_files/success-4.jpg"></a>
+                            </th>
+            <td>
+                                <h4>20 Вересня 2012</h4>
+                <h3><a href="http://iii.uwc.org.ua/my-zbyraiemo-istorii">Ми збираємо історії успіху фіналістів чемпіонату</a></h3>
+                Ми збираємо історії успіху фіналістів чемпіонату. Знаємо, їх багато. Деякі з історії розмістили на сайті, в розділі "Історії успіху"
+            </td>
+        </tr>
+                                <tr style="display: none" class="newsHidden">
+            <th>
+                                    <a href="http://iii.uwc.org.ua/uwc-final-location"><img src="./example_files/060912_3.png"></a>
+                            </th>
+            <td>
+                                <h4> 6 Вересня 2012</h4>
+                <h3><a href="http://iii.uwc.org.ua/uwc-final-location">Де відбудеться фінал UWC</a></h3>
+                Фінальна частина третього Ukrainian Web Challenge пройде у офісі нашого партнера – компанії Ciklum.
+            </td>
+        </tr>
+                                <tr style="display: none" class="newsHidden">
+            <th>
+                                    <a href="http://iii.uwc.org.ua/uwc-na-itjam"><img src="./example_files/UWC.png"></a>
+                            </th>
+            <td>
+                                <h4> 2 Вересня 2012</h4>
+                <h3><a href="http://iii.uwc.org.ua/uwc-na-itjam">UWC на IT Jam</a></h3>
+                1 вересня пройшов один з найбільш масштабних ІТ-заходів в Україні: IT Jam, де ми анонсували UWC III та розігрували подарунки
+            </td>
+        </tr>
+                    </tbody></table>
+<a href="javascript:void(0)" onclick="$(&#39;.newsHidden&#39;).slideDown();$(this).hide();">Показати ще</a>
+</td>
+                        <td class="content-wrap-part" style="width:237px">
+
+<div class="socialbox">
+  <a class="one_button" target="_blank" rel="nofollow" href="https://www.facebook.com/sharer.php?u=http%3A%2F%2Fiii.uwc.org.ua%2F&title=%D0%93%D0%BE%D0%BB%D0%BE%D0%B2%D0%BD%D0%B0%20%7C%20UA%20Web%20Challenge" title="Share on Facebook">
+    <img src="./example_files/facebook.png" alt="Share to Facebook" width="20px">
+  </a>
+  <a class="one_button" target="_blank" rel="nofollow" href="https://twitter.com/share?url=http%3A%2F%2Fiii.uwc.org.ua%2F&text=%D0%93%D0%BE%D0%BB%D0%BE%D0%B2%D0%BD%D0%B0%20%7C%20UA%20Web%20Challenge" title="Share on Twitter">
+    <img src="./example_files/twitter.png" alt="Share to Twitter" width="20px">
+  </a>
+  <a class="one_button" target="_blank" rel="nofollow" href="http://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Fiii.uwc.org.ua%2F&title=%D0%93%D0%BE%D0%BB%D0%BE%D0%B2%D0%BD%D0%B0%20%7C%20UA%20Web%20Challenge" title="Share on Linkedin">
+    <img src="./example_files/linkedin.png" alt="Share to Linkedin" width="20px">
+  </a>
+  <a class="one_button" target="_blank" rel="nofollow" href="http://del.icio.us/post?url=http%3A%2F%2Fiii.uwc.org.ua%2F&title=%D0%93%D0%BE%D0%BB%D0%BE%D0%B2%D0%BD%D0%B0%20%7C%20UA%20Web%20Challenge" title="Share on Delicious">
+    <img src="./example_files/delicious.png" alt="Share to Delicious" width="20px">
+  </a>
+  <a class="one_button" target="_blank" rel="nofollow" href="http://www.google.com/bookmarks/mark?op=edit&bkmk=http%3A%2F%2Fiii.uwc.org.ua%2F&title=%D0%93%D0%BE%D0%BB%D0%BE%D0%B2%D0%BD%D0%B0%20%7C%20UA%20Web%20Challenge" title="Send to Google bookmarks">
+    <img src="./example_files/google.png" alt="Share to Google" width="20px">
+  </a>
+  <a class="one_button" target="_blank" rel="nofollow" href="https://twitter.com/UAWebChallenge">
+    <img src="./example_files/follow_us-b.png" alt="Follow UAWebChallenge on Twitter" height="20" width="119">
+  </a>
+</div>
+
+<div class="socialbox" style="width:201px; background: #eff2f4; border: 1px solid #cedbe4; padding: 12px 15px; text-align: center">
+    
+        
+                <a href="http://iii.uwc.org.ua/#" class="log"><img src="./example_files/enter_uk.png" alt="Увійти"></a>
+
+
+        
+</div>
+
+            <div id="r-booster" style="height: 341px; background: none;">
+	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="234" height="341" id="240x350" align="middle">
+				<param name="movie" value="http://iii.uwc.org.ua/public/files/banners/240x350.swf">
+				<param name="quality" value="high">
+				<param name="bgcolor" value="#ffffff">
+				<param name="play" value="true">
+				<param name="loop" value="true">
+				<param name="wmode" value="window">
+				<param name="scale" value="showall">
+				<param name="menu" value="true">
+				<param name="devicefont" value="false">
+				<param name="salign" value="">
+				<param name="allowScriptAccess" value="sameDomain">
+				<!--[if !IE]>-->
+				<object type="application/x-shockwave-flash" data="http://iii.uwc.org.ua/public/files/banners/240x350.swf" width="234" height="341">
+					<param name="movie" value="http://iii.uwc.org.ua/public/files/banners/240x350.swf">
+					<param name="quality" value="high">
+					<param name="bgcolor" value="#ffffff">
+					<param name="play" value="true">
+					<param name="loop" value="true">
+					<param name="wmode" value="window">
+					<param name="scale" value="showall">
+					<param name="menu" value="true">
+					<param name="devicefont" value="false">
+					<param name="salign" value="">
+					<param name="allowScriptAccess" value="sameDomain">
+				<!--<![endif]-->
+					<a href="http://www.adobe.com/go/getflash">
+						<img src="./example_files/get_flash_player.gif" alt="Get Adobe Flash player">
+					</a>
+				<!--[if !IE]>-->
+				</object>
+				<!--<![endif]-->
+			</object>
+</div>
+<div id="r-booster" style="height: 30px; background: none;"><p align="center">
+            <a href="http://iii.uwc.org.ua/announce-championship">Скачати банер</a></p></div>
+            
+    
+<div class="socialbox" style="width:201px; background: #eff2f4; border: 1px solid #cedbe4; padding: 12px 15px 15px 15px; text-align: left">
+
+  
+  <img src="./example_files/11.jpg" style="width: 100%; padding-bottom: 10px">
+  <b>Олексій Калюжний</b><br>
+Номінація «Front-end developer», більше 3 років досвіду<br>
+<br>
+<i>Эмоции просто на высоте, а впечатления незабываемые! =) UA Web Challenge 2012 был организован на высшем уровне! Так держать ;) Особо порадовали знакомство и общение с многими интересными людьми. Огромное Вам спасибо за то, что есть такое мероприятие как UA Web Challenge! С нетерпением жду следующего года.
+</i><p align="right" style="padding-top: 10px; padding-bottom: 0px;"><a href="http://iii.uwc.org.ua/vidguky">ще відгуки...</a></p>
+</div>
+            <div id="r-booster-ua">
+<a href="http://iii.uwc.org.ua/success-stories" class="abooster animate"><img src="./example_files/r-booster-ua.png" border="0" alt="Історії успіху наших фіналістів"></a>
+</div>
+            
+<div class="socialbox">
+    <script type="text/javascript" src="./example_files/openapi(1).js"></script>
+    <div id="vk_groups" style="height: 216px; width: 233px; background-image: none; background-position: initial initial; background-repeat: initial initial; "><iframe name="fXDed978" frameborder="0" src="./example_files/widget_community.htm" width="233" height="200" scrolling="no" id="vkwidget1" style="overflow: hidden; height: 216px; "></iframe></div>
+    <script type="text/javascript">VK.Widgets.Group("vk_groups", {mode: 0, width: "233", height: "200"}, 23852567)</script>
+</div>
+
+<div class="socialbox">
+  <iframe src="./example_files/likebox.htm" width="233" height="200" scrolling="no" align="top" frameborder="0" class="wrapper"></iframe>
+</div>
+<div class="socialbox">
+<script charset="utf-8" src="./example_files/widget(1).js"></script>
+<script>
+new TWTR.Widget({
+  version: 2,
+  rpp: 3,
+  type: 'search',
+  search: 'from:UAWebChallenge OR @UAWebChallenge OR #uwcua OR "UA Web Challenge" OR "Ukrainian Web Challenge" exclude:retweets',
+  interval: 600,
+  title: 'UA Web Challenge',
+  subject: '#uwcua',
+  width: 233,
+  height: 290,
+  theme: {
+    shell: {
+      background: '#8ec1da',
+      color: '#ffffff'
+    },
+    tweets: {
+      background: '#ffffff',
+      color: '#444444',
+      links: '#1985b5'
+    }
+  },
+  features: {
+    scrollbar: false,
+    loop: true,
+    live: true,
+    avatars: true,
+    behavior: 'all'
+  }
+}).render().start();
+</script><div class="twtr-widget" id="twtr-widget-1"><div class="twtr-doc" style="width: 233px;">            <div class="twtr-hd"><h3><a target="_blank" style="color:#ffffff" href="https://twitter.com/search/from%3AUAWebChallenge%20OR%20%40UAWebChallenge%20OR%20%23uwcua%20OR%20%22UA%20Web%20Challenge%22%20OR%20%22Ukrainian%20Web%20Challenge%22%20exclude%3Aretweets">UA Web Challenge</a></h3>                      <h4><a target="_blank" style="color:#ffffff" href="https://twitter.com/search/from%3AUAWebChallenge%20OR%20%40UAWebChallenge%20OR%20%23uwcua%20OR%20%22UA%20Web%20Challenge%22%20OR%20%22Ukrainian%20Web%20Challenge%22%20exclude%3Aretweets">#uwcua</a></h4>             </div>            <div class="twtr-bd">              <div class="twtr-timeline" style="height: 290px;">                <div class="twtr-tweets">                  <div class="twtr-reference-tweet"></div><div id="tweet-id-6" class="twtr-tweet" style="opacity: 1; height: 66px; -webkit-transition: opacity 0.5s ease-out; "><div class="twtr-tweet-wrap">         <div class="twtr-avatar">           <div class="twtr-img"><a target="_blank" href="https://twitter.com/intent/user?screen_name=wikeymusic"><img alt="wikeymusic profile" src="./example_files/av_normal.png"></a></div>         </div>         <div class="twtr-tweet-text">           <p>             <a target="_blank" href="https://twitter.com/intent/user?screen_name=wikeymusic" class="twtr-user">wikeymusic</a> 8 hours of work and i've finished <a href="http://twitter.com/search?q=%23uwcua" title="#uwcua" class="tweet-url hashtag" target="_blank">#uwcua</a> architect task.             <em>            <a target="_blank" class="twtr-timestamp" time="Sun, 04 Nov 2012 00:01:32 +0000" href="https://twitter.com/wikeymusic/status/264880021427077120">14 hours ago</a> ·            <a target="_blank" class="twtr-reply" href="https://twitter.com/intent/tweet?in_reply_to=264880021427077120">reply</a> ·             <a target="_blank" class="twtr-rt" href="https://twitter.com/intent/retweet?tweet_id=264880021427077120">retweet</a> ·             <a target="_blank" class="twtr-fav" href="https://twitter.com/intent/favorite?tweet_id=264880021427077120">favorite</a>             </em>           </p>         </div>       </div></div><div id="tweet-id-5" class="twtr-tweet" style="opacity: 1; height: 80px; -webkit-transition: opacity 0.5s ease-out; "><div class="twtr-tweet-wrap">         <div class="twtr-avatar">           <div class="twtr-img"><a target="_blank" href="https://twitter.com/intent/user?screen_name=malkinstanislav"><img alt="malkinstanislav profile" src="./example_files/jampo_face2_normal.jpg"></a></div>         </div>         <div class="twtr-tweet-text">           <p>             <a target="_blank" href="https://twitter.com/intent/user?screen_name=malkinstanislav" class="twtr-user">malkinstanislav</a> Продолжают поступать решения от участников <a href="http://twitter.com/search?q=%23uwcua" title="#uwcua" class="tweet-url hashtag" target="_blank">#uwcua</a> . Завтра последний день, finish him!             <em>            <a target="_blank" class="twtr-timestamp" time="Sat, 03 Nov 2012 19:06:22 +0000" href="https://twitter.com/malkinstanislav/status/264805738138972160">19 hours ago</a> ·            <a target="_blank" class="twtr-reply" href="https://twitter.com/intent/tweet?in_reply_to=264805738138972160">reply</a> ·             <a target="_blank" class="twtr-rt" href="https://twitter.com/intent/retweet?tweet_id=264805738138972160">retweet</a> ·             <a target="_blank" class="twtr-fav" href="https://twitter.com/intent/favorite?tweet_id=264805738138972160">favorite</a>             </em>           </p>         </div>       </div></div><div id="tweet-id-4" class="twtr-tweet" style="opacity: 1; height: 94px; -webkit-transition: opacity 0.5s ease-out; "><div class="twtr-tweet-wrap">         <div class="twtr-avatar">           <div class="twtr-img"><a target="_blank" href="https://twitter.com/intent/user?screen_name=tokarskiyura"><img alt="tokarskiyura profile" src="./example_files/23d767c1de5b0e8aaef49ca5e0fd3a5c_normal.png"></a></div>         </div>         <div class="twtr-tweet-text">           <p>             <a target="_blank" href="https://twitter.com/intent/user?screen_name=tokarskiyura" class="twtr-user">tokarskiyura</a> Ну нарешті: закінчив і відправив роботу на <a href="http://twitter.com/search?q=%23uwcua" title="#uwcua" class="tweet-url hashtag" target="_blank">#uwcua</a>. Надіюсь, на цей раз не зробив помилки з поштою, як минулого разу :)             <em>            <a target="_blank" class="twtr-timestamp" time="Thu, 01 Nov 2012 17:56:01 +0000" href="https://twitter.com/tokarskiyura/status/264063257961181184">2 days ago</a> ·            <a target="_blank" class="twtr-reply" href="https://twitter.com/intent/tweet?in_reply_to=264063257961181184">reply</a> ·             <a target="_blank" class="twtr-rt" href="https://twitter.com/intent/retweet?tweet_id=264063257961181184">retweet</a> ·             <a target="_blank" class="twtr-fav" href="https://twitter.com/intent/favorite?tweet_id=264063257961181184">favorite</a>             </em>           </p>         </div>       </div></div><div class=" twtr-new-results"><div class="twtr-results-inner"> &nbsp; </div><div class="twtr-results-hr"> &nbsp; </div><span> <strong>3</strong> new tweets</span></div><div id="tweet-id-3" class="twtr-tweet"><div class="twtr-tweet-wrap">         <div class="twtr-avatar">           <div class="twtr-img"><a target="_blank" href="https://twitter.com/intent/user?screen_name=stfalcon"><img alt="stfalcon profile" src="./example_files/tanasiychuk_normal.jpg"></a></div>         </div>         <div class="twtr-tweet-text">           <p>             <a target="_blank" href="https://twitter.com/intent/user?screen_name=stfalcon" class="twtr-user">stfalcon</a> <a href="http://twitter.com/search?q=%23uwcua" title="#uwcua" class="tweet-url hashtag" target="_blank">#uwcua</a> якщо в когось є питання по командному завданню, то пишіть на ceo@stfalcon.com. в скайпі я не часто             <em>            <a target="_blank" class="twtr-timestamp" time="Tue, 30 Oct 2012 00:23:50 +0000" href="https://twitter.com/stfalcon/status/263073690495901697">5 days ago</a> ·            <a target="_blank" class="twtr-reply" href="https://twitter.com/intent/tweet?in_reply_to=263073690495901697">reply</a> ·             <a target="_blank" class="twtr-rt" href="https://twitter.com/intent/retweet?tweet_id=263073690495901697">retweet</a> ·             <a target="_blank" class="twtr-fav" href="https://twitter.com/intent/favorite?tweet_id=263073690495901697">favorite</a>             </em>           </p>         </div>       </div></div><div id="tweet-id-2" class="twtr-tweet"><div class="twtr-tweet-wrap">         <div class="twtr-avatar">           <div class="twtr-img"><a target="_blank" href="https://twitter.com/intent/user?screen_name=malkinstanislav"><img alt="malkinstanislav profile" src="./example_files/jampo_face2_normal.jpg"></a></div>         </div>         <div class="twtr-tweet-text">           <p>             <a target="_blank" href="https://twitter.com/intent/user?screen_name=malkinstanislav" class="twtr-user">malkinstanislav</a> Все вопросы по <a href="http://twitter.com/search?q=%23uwcua" title="#uwcua" class="tweet-url hashtag" target="_blank">#uwcua</a> можно задавать в скайп-чате <a href="http://t.co/SFXlOkzJ" target="_blank" urlentities="[object Object]" rel="nofollow">tinyurl.com/8kuk8da</a> . Вступайте и будете знать ответы на все вопросы.             <em>            <a target="_blank" class="twtr-timestamp" time="Sun, 28 Oct 2012 22:10:09 +0000" href="https://twitter.com/malkinstanislav/status/262677661363617792">6 days ago</a> ·            <a target="_blank" class="twtr-reply" href="https://twitter.com/intent/tweet?in_reply_to=262677661363617792">reply</a> ·             <a target="_blank" class="twtr-rt" href="https://twitter.com/intent/retweet?tweet_id=262677661363617792">retweet</a> ·             <a target="_blank" class="twtr-fav" href="https://twitter.com/intent/favorite?tweet_id=262677661363617792">favorite</a>             </em>           </p>         </div>       </div></div><div id="tweet-id-1" class="twtr-tweet"><div class="twtr-tweet-wrap">         <div class="twtr-avatar">           <div class="twtr-img"><a target="_blank" href="https://twitter.com/intent/user?screen_name=wikeymusic"><img alt="wikeymusic profile" src="./example_files/av_normal.png"></a></div>         </div>         <div class="twtr-tweet-text">           <p>             <a target="_blank" href="https://twitter.com/intent/user?screen_name=wikeymusic" class="twtr-user">wikeymusic</a> <a href="http://twitter.com/search?q=%23uwcua" title="#uwcua" class="tweet-url hashtag" target="_blank">#uwcua</a> task for architect really blow mind! don't expected task like that! but, if task hard, desire to solve it stronger)             <em>            <a target="_blank" class="twtr-timestamp" time="Sun, 28 Oct 2012 12:09:57 +0000" href="https://twitter.com/wikeymusic/status/262526616075386880">7 days ago</a> ·            <a target="_blank" class="twtr-reply" href="https://twitter.com/intent/tweet?in_reply_to=262526616075386880">reply</a> ·             <a target="_blank" class="twtr-rt" href="https://twitter.com/intent/retweet?tweet_id=262526616075386880">retweet</a> ·             <a target="_blank" class="twtr-fav" href="https://twitter.com/intent/favorite?tweet_id=262526616075386880">favorite</a>             </em>           </p>         </div>       </div></div>                  <!-- tweets show here -->                </div>              </div>            </div>            <div class="twtr-ft">              <div><a target="_blank" href="https://twitter.com/"><img alt="" src="./example_files/widget-bird.png"></a>                <span><a target="_blank" class="twtr-join-conv" style="color:#ffffff" href="https://twitter.com/search/from%3AUAWebChallenge%20OR%20%40UAWebChallenge%20OR%20%23uwcua%20OR%20%22UA%20Web%20Challenge%22%20OR%20%22Ukrainian%20Web%20Challenge%22%20exclude%3Aretweets">Join the conversation</a></span>              </div>            </div>          </div></div>
+</div>
+</td>
+                    </tr>
+                </tbody></table>
+
+            </div><!-- #content -->
+
+        <div class="clear"></div>
+        </div><!-- #main -->
+
+
+    </div><!-- div.main-wrap-paddings -->
+
+
+    <div id="footer">
+        <!-- Google Code for &#1087;&#1086;&#1089;&#1077;&#1090;&#1080;&#1090;&#1077;&#1083;&#1080; Remarketing List -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1009270801;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "JybSCPe6yQIQkYCh4QM";
+var google_conversion_value = 0;
+/* ]]> */
+</script>
+<script type="text/javascript" src="./example_files/conversion.js">
+</script><img height="1" width="1" border="0" src="./example_files/saved_resource">
+ <noscript>
+&lt;div style="display:inline;"&gt;
+&lt;img height="1" width="1" style="border-style:none;" alt="" src="http://www.googleadservices.com/pagead/conversion/1009270801/?label=JybSCPe6yQIQkYCh4QM&amp;amp;guid=ON&amp;amp;script=0 "/&gt;
+&lt;/div&gt;
+</noscript>
+
+<div style="float:left">
+    ©&nbsp;2011 - 2012<br>
+    <div style="margin-left:1em">
+        ініціативна група<br>
+        <b><span style="color:#FCC719">U</span><span style="color:#07F">A</span>Web</b>Challenge<br>
+        <div style="color:#777; margin-top:2em">Всі права захищені</div>
+    </div>
+</div>
+<div style="float:right">
+    <a target="_blank" href="http://stfalcon.com/"><img src="./example_files/stfalcon-logo.png" style="position:relative;right:0;top:1em"></a>
+</div>
+
+
+<div style="text-align: center; vertical-align: bottom;"><a target="_blank" href="http://iii.uwc.org.ua/join"><img style="margin-top: -55px;" src="./example_files/boy3.png"></a></div>
+    </div><!-- #footer -->
+
+    </div><!-- div.main-wrap-content -->
+
+    </div><!-- div.main-wrap -->
+
+
+</div><!-- #wrap -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-29759192-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  
+  
+$("#select_type_of_group").change(function(){
+    var val = $(this).val();
+    if(val == "team") {
+        $("#team_name").html("<br />Назва команди: <br /><input type='text' style='width: 150px' name='team_name'>");
+    } else {
+        $("#team_name").html("");
+    }
+    
+});  
+  
+$(".changeyearinfo").click(function(){
+   var attributesdiv = $(this).attr("href");
+   $(".changeyearinfo").css("font-weight","normal");
+   $(this).css("font-weight","bold");
+   if(attributesdiv=="#min1year"){
+    $("#max1year").hide(); $(attributesdiv).slideDown(1000);
+   }else
+   if(attributesdiv=="#max1year"){
+    $("#min1year").hide(); $(attributesdiv).slideDown(1000);
+   }
+});
+$(".reg2").click(function(){
+     if("/ru".indexOf("/ru")>-1) var mail=prompt('Реєстрація стартує 1 жовтня. Якщо Ви бажаєте отримати нагадування про початок реєстрації, будь-ласка, введіть Ваш E-mail:');
+     else var mail=prompt('Регистрация стартует 1 октября. Если Вы хотели бы получить напоминание о начале регистрации, пожалуйста, введите Ваш E-mail:');
+    if(mail!=false && mail!=null){
+    $.ajax({
+      type: "POST",
+      url: "../../remb_me.php",
+      data: { mail: mail },
+      success: function(data){
+        alert(data);
+      }
+    });
+    }
+});
+
+</script>
+
+<div style="display: none; " id="hiddenlpsubmitdiv"></div><script>try{for(var lastpass_iter=0; lastpass_iter < document.forms.length; lastpass_iter++){ var lastpass_f = document.forms[lastpass_iter]; if(typeof(lastpass_f.lpsubmitorig2)=="undefined"){ lastpass_f.lpsubmitorig2 = lastpass_f.submit; lastpass_f.submit = function(){ var form=this; var customEvent = document.createEvent("Event"); customEvent.initEvent("lpCustomEvent", true, true); var d = document.getElementById("hiddenlpsubmitdiv"); for(var i = 0; i < document.forms.length; i++){ if(document.forms[i]==form){ d.innerText=i; } } d.dispatchEvent(customEvent); form.lpsubmitorig2(); } } }}catch(e){}</script></body></html>

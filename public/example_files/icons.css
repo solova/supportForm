@@ -1,0 +1,40 @@
+/* Icons
+*******************************************************************************************************************************/
+@font-face {
+    font-family: 'WebSymbolsRegular';
+    src: url("fonts/icons/websymbols-regular-webfont.eot");
+    src: url("fonts/icons/websymbols-regular-webfont.eot-#iefix") format('embedded-opentype'),
+         url("fonts/icons/websymbols-regular-webfont.woff") format('woff'),
+         url("fonts/icons/websymbols-regular-webfont.ttf") format('truetype'),
+         url("fonts/icons/websymbols-regular-webfont.svg#WebSymbolsRegular") format('svg');
+}
+/* in-line icons */
+a i   { font-family: 'WebSymbolsRegular'; font-style: normal; padding-left: 0.2em; font-size:0.81em; line-height: 0.7em;}
+a i.l { padding-left: 0; padding-right: 0.2em;}
+ small a i,
+.small a i { font-size:1em; }
+.icon,
+.icons,
+.icons-big,
+.icons-large,
+.icons-great,
+.icon i,
+.icons i,
+.icons-big i,
+.icons-large i,
+.icons-great i {font-family: 'WebSymbolsRegular'; font-style: normal; font-weight:normal; vertical-align:baseline; font-weight: normal; line-height: 0.7em; padding:0;}
+.icons-big {font-size:20px; margin-bottom:-30px;}
+.icons-big big {font-size:25px;}
+.icons-big i {padding-right:10px;}
+.icons-large {font-size:30px; margin-bottom:-40px;}
+.icons-great {font-size:40px; margin-bottom:-50px;}
+.black a,
+.black a:visited    { color: #000; }
+.black a:hover,
+.black a:visited:hover,
+.black a:active      { color: #666; }
+.gray a,
+.gray a:visited    { color: #999; text-decoration: none; }
+.gray a:hover,
+.gray a:visited:hover,
+.gray a:active      { color: #fff; }

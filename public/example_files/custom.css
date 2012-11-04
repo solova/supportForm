@@ -1,0 +1,35 @@
+body {  width: 100%; color:#333; height: 100%!important;}
+@font-face {
+    font-family: 'IntroRegular';
+    src: url("fonts/intro/intro-webfont.eot");
+    src: url("fonts/intro/intro-webfont.eot-#iefix") format('embedded-opentype'),
+         url("fonts/intro/intro-webfont.woff") format('woff'),
+         url("fonts/intro/intro-webfont.ttf") format('truetype'),
+         url("fonts/intro/intro-webfont.svg#IntroRegular") format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+.icon {color:#ff7f9b;}
+.top-menu { height:40px; background:#333;}
+.top-menu .social {padding-top:6px;}
+.top-menu .social  i{margin-right:10px;}
+.top-menu .archive {padding-top:8px;}
+.top-menu .archive a,
+.top-menu .archive strong {
+		display: -moz-inline-box;
+		display:inline-block;
+		width:65px;
+		margin-right:20px;
+		font-weight: normal;
+		font-family: IntroRegular,Tahoma,Gadget,Verdana,Sans-serif!important;
+		text-transform: uppercase;
+		font-size:18px;
+		line-height:20px;
+		letter-spacing:0.2em;
+		}
+.top-menu .archive a,
+.top-menu .archive a:visited    { color: #999; text-decoration: none; }
+.top-menu .archive strong,
+.top-menu .archive a:hover,
+.top-menu .archive a:visited:hover,
+.top-menu .archive a:active      { color: #FFF; }

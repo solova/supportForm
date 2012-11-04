@@ -1,0 +1,144 @@
+#support-form{
+    width: 240px;
+    height: 372px;
+    border: 4px solid #3a3d3d;
+    border-radius: 8px 8px 0 0;
+    font-family: arial,sans-serif;
+    font-size: 13px;
+    position: fixed;
+    /*bottom: -351px;*/
+    bottom: 0px;
+    right: 5%;
+    -webkit-transition: bottom 0.5s ease;
+    -moz-transition: bottom 0.5s ease;
+    z-index: 99;
+}
+
+#support-form.minimized{
+    bottom: -351px;
+}
+
+#support-form a, #support-form div{
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+#support-form .support-form-title{
+    height: 25px;
+    line-height: 25px;
+    background-color: #3a3d3d;
+    color: white;
+    position: relative;
+}
+
+#support-form .support-form-status{
+    color: silver;
+    font-size: larger;
+    width: 15px;
+    text-align: center;
+    display: inline-block;
+}
+
+#support-form .support-form-title a{
+    position: absolute;
+    width: 16px;
+    height: 25px;
+    font-size: larger;
+    line-height: 25px; 
+    color: white;
+    text-shadow: 2px 2px 2px gray;
+}
+
+#support-form .support-form-title a:hover{
+    background-color: #343636;
+}
+
+#support-form a.support-form-minimize{
+    right: 20px;
+}
+
+#support-form a.support-form-close{
+    right: 3px;
+}
+
+#support-form .support-form-textarea{
+    padding-right: 6px;
+
+}
+
+#support-form .support-form-chat{
+    height: 278px;
+    overflow-y: auto;
+    background-color: white;
+
+    color: #222;
+    font-size: 13px;
+    line-height: 15px;
+    padding: 8px;
+}
+
+#support-form .support-form-message-head{
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+
+#support-form .support-form-author{
+    display: table-cell;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: bold;
+    text-overflow: ellipsis;
+}
+
+#support-form .support-form-time{
+    display: table-cell;
+    text-align: right;
+    font-size: smaller;
+    color: #777;
+    width: 50px;
+    white-space: nowrap;
+    word-wrap: break-word;
+}
+
+#support-form .support-form-self{
+    color: #27B9B2;
+}
+
+#support-form .support-form-message-body{
+    word-wrap: break-word;
+}
+
+#support-form hr{
+    color: #dfdfdf; 
+    background-color:#dfdfdf; 
+    border:0px none;
+    height:1px; 
+    clear:both; 
+}
+
+#support-form .support-form-textarea textarea{
+    overflow-y: hidden;
+    overflow-x: auto;
+    resize: none;
+    font-size: 90%;
+    height: 47px;
+    width: 100%;
+}
+
+.support-form-viewport{
+    position: absolute;
+}
+
+.support-form-viewport img{
+    outline: 1px solid green;
+    cursor: crosshair;
+
+}
+
+.support-form-targetcursor{
+    position: absolute;
+}

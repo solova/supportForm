@@ -1,0 +1,36 @@
+.container { padding-top:4px; width:900px; margin: 0 auto 0 auto; clear:both; vertical-align:top;}
+	.level { margin: 0 0 0 0; clear:both; vertical-align:top;}
+	.box              {
+				display: -moz-inline-box;
+				display:inline-block;
+				vertical-align:top;
+				margin: 0 10px 0 10px;
+				width:280px;
+				zoom: 1;                 // only for IE
+				*display: inline;        // huck only for IE
+			   }
+	.m2            { width:280px;  }
+	.mrg2            { margin-left:300px;  }
+@media only screen and (max-width: 620px){
+/* Мобильные телефоны в портретном режиме.
+   1 колонка
+**************************************************************/
+	.container{ width:300px;}
+	.hr .box {width:280px;}
+	.top-menu .archive {display: none;}
+}
+@media only screen and (min-width: 621px) and (max-width: 920px){
+/* Мобильные телефоны в альбомном и планшеты в портретном режимах.
+   2 колонки
+**************************************************************/
+	.container{ width:600px;}
+	.hr .box {width:580px;}
+	.top-menu .archive {margin-left:0px;}
+}
+@media only screen and (min-width: 921px) and (max-width: 1240px){
+/* Экраны небольших нетбуков и планшеты в альбомном режиме
+   3 колонки
+**************************************************************/
+	.container{ width:900px;}
+	.hr .box {width:880px;}
+}
