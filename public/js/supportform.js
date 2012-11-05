@@ -13,6 +13,7 @@
             "supportname": "Помічник", //имя сотрудника техподдержки
             "maxlength": 2048, //максимальная длина сообщения в чате
             "role": "user",
+            "connect": false//,
             //"zoom": 0.5 //коэфициент отображения viewport пользователя
         };
 
@@ -31,7 +32,7 @@
         var supportForm = $(templates.main);
         var total = 0;
 
-        //private-функции
+        //private-функции, хелперы
         var getTime = function(){
             var date = new Date();
             return ('00'+date.getHours()).substr(-2) + ':' + ('00'+date.getMinutes()).substr(-2);
@@ -60,30 +61,44 @@
         }
         
         $(function(){
+            if(options.role == 'support') $("body").append(templates.viewport);
+            supportForm.addClass("minimized");
 
             $("body").append(supportForm);
-            if(options.role == 'support') $("body").append(templates.viewport);
+
 
             //события
 
             $(".support-form-viewport").live("click", function(e){
                 console.log("image click", e);
                 var pos = { x: e.layerX, y: e.layerY };
-                // pos.x /= Math.ceil(options.zoom);
-                // pos.y /= Math.ceil(options.zoom);
                 socket.emit('message', { author: 'support', body: pos, type: 3 });
             })
 
-            $(".support-form-minimize", supportForm).click(function(){
+            $(".support-form-minimize, .support-form-title", supportForm).click(function(e){
+                e.stopPropagation();
                 supportForm.toggleClass("minimized");
+
+
+                if (options.role=='user' && (options.connect==false) && (supportForm.hasClass("minimized")==false)){
+                    socket.emit('message', { author: options.role, body: "request", type: 9 });  
+                    addMessage({
+                        name: 'Системне повідомлення',
+                        body: 'Запит підтримки. Почекайте',
+                        classname:''
+                    })
+                }
             });
 
-            $(".support-form-close", supportForm).click(function(){
+            $(".support-form-close", supportForm).click(function(e){
+                e.stopPropagation();
                 supportForm.hide();
             });
 
             $("textarea", supportForm).keydown(function(e){
 
+                if (options.connect == false) return false;
+                
                 if ((e.keyCode==13) && (e.shiftKey == false)){
 
                     if ($(this).val().length > options.maxlength) {
@@ -116,7 +131,6 @@
 
             //прослушивание сокета
             socket.on('message', function (message) {
-                console.log("get message", message);
 
                 switch(message.type){
                     case 1:
@@ -135,12 +149,12 @@
                         var timeout = setTimeout(function(){hint.fadeOut('slow')}, 5000);
 
                         hint.attr("src", "target.gif");
-                        hint.css({ left: 0, top: 0});
-                        hint.addClass("support-form-targetcursor");
+                        hint.css({ left: 0, top: 0, position: 'absolute'});
                         
                         hint.click(function(){ clearTimeout(timeout); hint.remove() });
 
                         $("body").append(hint);
+                        console.log("HINT", message.body);
                         hint.animate({
                             left: message.body.x,
                             top: message.body.y
@@ -150,6 +164,23 @@
                              scrollTop: (message.body.y > 400) ? (message.body.y - 400) : 0
                         }, 2000);
                         break;
+                    case 9:
+
+                        if(options.role=='support'){
+                            var req = confirm("Користувач викликає по домомогу. Натисніть ОК, щоб розпочати чат.");
+                            if(req){
+                                supportForm.removeClass("minimized");
+                                socket.emit('message', { author: options.role, body: "response", type: 9 });  
+                                options.connect = true;
+                            }
+                        }else if(options.role=='user'){
+                            addMessage({
+                                name: 'Системне повідомлення',
+                                body: 'Підтримка на зв\'язку',
+                                classname:''
+                            })
+                            options.connect = true;
+                        }
                 }
             })
         });
