@@ -17,4 +17,4 @@ support.html - страница сотрудника техподдержки
 client.html - страница юзера
 example.htm - сграбленная страница конкурса, на которую повешена техподдержка
 
-![ScreenShot](https://raw.github.com/xelios20/supportForm/master/public/demo.png)
+![ScreenShot](https://raw.github.com/xelios20/supportForm/master/public/screenshot.png)
