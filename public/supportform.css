@@ -1,3 +1,5 @@
+body{ margin:0; padding:0;}
+
 #support-form{
     width: 240px;
     height: 372px;
@@ -129,16 +131,12 @@
     width: 100%;
 }
 
-.support-form-viewport{
+#support-viewport{
     position: absolute;
 }
 
-.support-form-viewport img{
+#support-viewport img{
     outline: 1px solid green;
     cursor: crosshair;
 
-}
-
-.support-form-targetcursor{
-    position: absolute;
 }
