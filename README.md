@@ -11,8 +11,10 @@ Support Form
 
 API запуститься на localhost:8080. Помимо API запуститься static file server для папки ./public 
 
-В этой папке есть страницы разработанные для куонкурса.
+В этой папке есть страницы разработанные для конкурса.
 
-support.html - страница сотрудника техподдержка
+support.html - страница сотрудника техподдержки
 client.html - страница юзера
 example.htm - сграбленная страница конкурса, на которую повешена техподдержка
+
+![ScreenShot](https://raw.github.com/xelios20/supportForm/master/public/demo.png)
